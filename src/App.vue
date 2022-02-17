@@ -1,15 +1,35 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <Calendar />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
+import { jsonData } from "./api/fake-data.js";
+import { objectToArray } from "./helpers/dataConvert";
+import Calendar from "./components/Calendar.vue";
 export default {
   name: "App",
-  components: {
-    HelloWorld,
+  components: { Calendar },
+  data() {
+    return {
+      calendarInitialData: [],
+    };
+  },
+  mounted() {
+    const daysData = JSON.parse(localStorage.getItem("daysData")) || null;
+    if (daysData) {
+      const parsedJsonData = objectToArray(daysData);
+      this.calendarInitialData = parsedJsonData;
+      this.$store.dispatch("pushCurrentDaysData", parsedJsonData);
+    } else {
+      console.log(jsonData);
+      localStorage.setItem("daysData", JSON.stringify(jsonData));
+      const parsedJsonData = Object.keys(jsonData).map((key) => {
+        return { [key]: jsonData[key] };
+      });
+      this.calendarInitialData = parsedJsonData;
+      this.$store.dispatch("pushCurrentDaysData", parsedJsonData);
+    }
+    // localStorage.setItem("daysData", JSON.stringify(""));
   },
 };
 </script>
