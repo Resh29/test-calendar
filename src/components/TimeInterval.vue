@@ -11,7 +11,6 @@ export default {
   },
   computed: {
     isActive() {
-      // return this.currentData.find((el) => el?.bt === this.range.bt);
       return isInRange(this.range, this.currentData);
     },
   },
@@ -19,12 +18,12 @@ export default {
 </script>
 <style>
 .time-interval {
-  height: 10px;
-  width: 10px;
-  background: red;
+  height: 100%;
+  width: 100%;
   cursor: pointer;
+  transition: all 0.3s;
 }
 .active {
-  background-color: aqua;
+  background-color: darkgray;
 }
 </style>

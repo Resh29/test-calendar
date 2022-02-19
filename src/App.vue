@@ -3,45 +3,33 @@
 </template>
 
 <script>
-import { jsonData } from "./api/fake-data.js";
-import { objectToArray } from "./helpers/dataConvert";
+import { getData } from "./api/get-data.js";
 import Calendar from "./components/Calendar.vue";
 export default {
   name: "App",
   components: { Calendar },
   data() {
-    return {
-      calendarInitialData: [],
-    };
+    return {};
   },
   mounted() {
-    const daysData = JSON.parse(localStorage.getItem("daysData")) || null;
-    if (daysData) {
-      const parsedJsonData = objectToArray(daysData);
-      this.calendarInitialData = parsedJsonData;
-      this.$store.dispatch("pushCurrentDaysData", parsedJsonData);
-    } else {
-      console.log(jsonData);
-      localStorage.setItem("daysData", JSON.stringify(jsonData));
-      const parsedJsonData = Object.keys(jsonData).map((key) => {
-        return { [key]: jsonData[key] };
-      });
-      this.calendarInitialData = parsedJsonData;
-      this.$store.dispatch("pushCurrentDaysData", parsedJsonData);
-    }
-    // localStorage.setItem("daysData", JSON.stringify(""));
+    const daysData = getData();
+    this.$store.dispatch("pushCurrentDaysData", daysData);
   },
 };
 </script>
 
 <style>
+body {
+  margin: 0;
+  background: rgba(128, 128, 128, 0.055);
+}
 #app {
-  max-width: 1024px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-weight: bold;
 }
 </style>
